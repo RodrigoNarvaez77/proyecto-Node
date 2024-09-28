@@ -1,5 +1,6 @@
 const express = require('express');
 const mongoose = require('mongoose');
+const bcrypt = require('bcrypt');
 const path = require('path');
 const app = express();
 const port = 3005;
@@ -22,6 +23,37 @@ mongoose.connect('mongodb://localhost:27017/maestra')
 })
 .catch(err => {
     console.error('Error al conectar a MongoDB:', err);
+});
+
+const User = mongoose.model('usuarios', new mongoose.Schema({
+    username: String,
+    password: String,
+}));
+
+//async function createUser(username, password) {
+//    const hashedPassword = await bcrypt.hash(password, 10); // Hashea la contraseña
+//    const newUser = new User({ username, password: hashedPassword });
+//    await newUser.save();
+//}
+
+// Llama a esta función con el nombre de usuario y la contraseña
+//createUser('rodrigofinal', 'rodrigo1');
+
+// Ruta para manejar el login
+app.post('/login', async (req, res) => {
+    const { username, password } = req.body;
+
+    // Buscar el usuario en la base de datos
+    const user = await User.findOne({ username });
+    if (user) {
+
+        // Comparar la contraseña ingresada con la almacenada
+        const match = await bcrypt.compare(password, user.password);
+        if (match) {
+            return res.status(200).send('Login exitoso');
+        }
+    }
+    res.status(401).send('Credenciales inválidas');
 });
 
 //ruta del archivo
