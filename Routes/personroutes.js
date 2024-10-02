@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router(); //crear las instancias del crud
 const Person = require('../Models/index').person;
+const Proyect = require('../Models/index').proyect;
 
 //Ingresar una nueva persona
 router.post('/',async (req,res) =>{
@@ -17,7 +18,7 @@ router.post('/',async (req,res) =>{
 
 });
 
-//Mostrar Todos los Registros
+//Mostrar Todos los Registros de personas
 router.get('/',async(req,res) =>{
     try{
         const persons = await Person.find();
@@ -26,6 +27,18 @@ router.get('/',async(req,res) =>{
     }catch(err){
         res.status(500).json({mensaje: err.message});
     }
+});
+
+//Mostrar todos los proyectos
+router.get('/proyectos',async(req,res)=>{
+    try{
+        const proyectos = await Proyect.find();
+        console.log(proyectos);
+        res.status(200).json(proyectos);
+    }catch(err){
+        res.status(500).json({mensaje: err.menssage})
+    }
+
 });
 
 //Mostrar  registro por ID
@@ -68,6 +81,8 @@ try{
     res.status(500).json({mensaje: err.message});
 }
 });
+
+//codigo antiguo
 
 //Listar todos los trabajos de una persona.
 router.get('/works/:id',async(req,res) =>{
