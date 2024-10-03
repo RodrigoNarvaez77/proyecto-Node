@@ -1,7 +1,9 @@
 const express = require('express');
+const { proyect, personproyects } = require('../Models/index');
 const router = express.Router(); //crear las instancias del crud
 const Person = require('../Models/index').person;
 const Proyect = require('../Models/index').proyect;
+const PersonProyects = require('../Models/index').personproyects;
 
 //Ingresar una nueva persona
 router.post('/',async (req,res) =>{
@@ -9,6 +11,20 @@ router.post('/',async (req,res) =>{
     const person = new Person(req.body);
     try{
         const result = await person.save();
+
+        res.status(200).json(result);
+    }catch(err){
+        res.status(500).json({mensaje: err.mesagge});
+
+    }
+
+});
+
+router.post('/personasproyectos',async (req,res) =>{
+
+    const personproyects = new PersonProyects(req.body);
+    try{
+        const result = await personproyects.save();
 
         res.status(200).json(result);
     }catch(err){
@@ -40,6 +56,7 @@ router.get('/proyectos',async(req,res)=>{
     }
 
 });
+
 
 //Mostrar  registro por ID
 router.get('/:id',async(req,res) =>{
@@ -82,64 +99,16 @@ try{
 }
 });
 
-//codigo antiguo
-
-//Listar todos los trabajos de una persona.
-router.get('/works/:id',async(req,res) =>{
-    const { id } = req.params
+//Mostrar todas las personas y proyectos
+router.get('/proyectos/personaproyecto',async(req,res)=>{
     try{
-        const person = await Person.findById(id,'works');//campo que contiene los trabajos
-        res.status(200).json(person);
+        const personaproyectos = await PersonProyects.find();
+        console.log(personaproyectos);
+        res.status(200).json(personaproyectos);
     }catch(err){
-    res.status(500).json({mensaje: err.message});
-}
-});
-
-//Ingresar nuevo trabajo a una persona
-router.post('/works/:id',async(req,res) =>{
-    const { id } = req.params; //Obtener ID de la URL
-    const newworks = req.body; //Obtener el nuevo trabajo del cuerpo de la solicitud
-try{ 
-    const person = await Person.findById(id); 
-    person.works.push(newworks); //Agregar nuevo trabajo al listado de trabajos.
-    const savenewworks = await person.save() //guarda la operacion.
-    res.status(200).json(savenewworks);
-}
-catch(err){
-    res.status(500).json({mensaje: err.message});
-}
-});
-
-//Eliminar un trabajo a una persona.
-router.delete('/works/:id/:idworks',async(req,res) =>{
-    const { id,idworks } = req.params;
-    try{
-        const person = await Person.findById(id);
-        person.works = person.works.filter(work => work.id.toString() !== idworks); //funcion que define que cada id de trabajador debe ser distinto a idworks , de no estar funcion eliminaria todos los registros, para esto realiza un filtrado
-        console.log(`ID del trabajo a eliminar: ${idworks}`);
-        console.log(`Array: ${person}`);
-        await person.save();
-        res.status(200).json(person);
-    }catch(err){
-        res.status(500).json({mensaje: err.message});
+        res.status(500).json({mensaje: err.menssage})
     }
 });
 
-//Modificar un trabajo de una persona
-router.put('/works/:id/:idworks',async(req,res) =>{
-const {id,idworks} = req.params;
-const updateworks = req.body;
-try{
-    const updatedPersonworks = await Person.findOneAndUpdate(
-        { _id: id, 'works._id': idworks }, // Filtro para encontrar la persona y sus trabajos
-        { $set: { 'works.$': updateworks } }, // Actualización de sus trabajos el $ trae el primer documento que se cumple la condicion de arriba
-        { new: true, runValidators: true } // Devuelve el registro modificado
-    );
-    res.status(200).json(updatedPersonworks);
-}
-catch(err){
-res.status(500).json({mensaje: err.message});
-}
-});
 
 module.exports = router;
