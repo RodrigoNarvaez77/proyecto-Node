@@ -6,18 +6,27 @@ const Proyect = require('../Models/index').proyect;
 const PersonProyects = require('../Models/index').personproyects;
 
 //Ingresar una nueva persona
-router.post('/',async (req,res) =>{
+router.post('/', async (req, res) => {
+    try {
+        // Verificar si ya existe una persona con el mismo nombre, por ejemplo
 
-    const person = new Person(req.body);
-    try{
+            // Aquí se verifica si ya existe una persona con el mismo nombre y apellido
+            const existingPerson = await Person.findOne({
+                name: req.body.name,
+                lastName: req.body.lastName
+            });
+    
+            if (existingPerson) {
+                return res.status(400).json({ mensaje: "La persona ya existe." });
+            }    
+
+        const person = new Person(req.body);
         const result = await person.save();
-
-        res.status(200).json(result);
-    }catch(err){
-        res.status(500).json({mensaje: err.mesagge});
-
+        res.status(201).json(result); // Cambié el estado a 201 para creación exitosa
+    } catch (err) {
+        console.error(err); // Agrega esto para ver el error en la consola
+        res.status(500).json({ mensaje: err.message });
     }
-
 });
 
 router.post('/personasproyectos',async (req,res) =>{

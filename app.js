@@ -14,7 +14,13 @@ app.use(express.json());
 //});
 
 // Ruta principal
-app.use(express.static(path.join(__dirname, './View'))); // servir archivos estáticos desde la carpeta `index`
+// Middleware para servir archivos estáticos desde la carpeta View
+app.use(express.static(path.join(__dirname, './View')));
+
+// Ruta principal que redirige a login.html
+app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, './View/login.html'));
+});
 
 // Conectar a MongoDB
 mongoose.connect('mongodb://localhost:27017/maestra')
