@@ -65,7 +65,7 @@ app.post('/login', async (req, res) => {
 //ruta del archivo
 app.use('/api/persons',require('./Routes/personroutes'));
 
-//revisar cambios
+//revisar cambios y nuevos//
 
 // Iniciar el servidor
 app.listen(port, () => {
