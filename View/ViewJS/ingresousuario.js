@@ -1,3 +1,4 @@
+let isSubmitting = false; 
 document.addEventListener('DOMContentLoaded', () => {//esperar que carge el doom
     document.getElementById('addFuncionarioForm').addEventListener('submit', async (event) => {
         event.preventDefault(); 

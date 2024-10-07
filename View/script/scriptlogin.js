@@ -22,7 +22,7 @@ async function login() {
     });
 
     if (response.ok) {
-        window.location.href = '/index.html'; // Redirige a index.html
+        window.location.href = 'Index/index.html'; // Redirige a index.html
     } else {
         alert('Error en el login');
     }

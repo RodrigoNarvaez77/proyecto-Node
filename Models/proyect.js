@@ -3,7 +3,7 @@ const {Schema} = mongoose; // desestructura Schema del objeto mongoose
 
 //Modelo proyects
 const ProyectSchema = new Schema({
-    name:{type:String,require:true},
+    proyecto:{type:String,require:true},
     area:{type:String,require:true},
     //definicion con sus atributos
 }, {collection:'proyectos'});
