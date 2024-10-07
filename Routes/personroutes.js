@@ -43,6 +43,33 @@ router.post('/personasproyectos',async (req,res) =>{
 
 });
 
+//Ingresar una nuevo proyecto
+router.post('/proyectos/ingresarproyecto', async (req, res) => {
+    try {
+        // Verificar si ya existe una proyecto con el mismo nombre
+
+            // Aquí se verifica si ya existe una persona con el mismo nombre y apellido
+            const existingProyect = await Proyect.findOne({
+                proyecto: req.body.proyecto,
+                area: req.body.area
+            });
+
+            const { proyecto, area } = req.body;
+            console.log(req.body); 
+    
+            if (existingProyect) {
+                return res.status(400).json({ mensaje: "Proyecto ya existe." });
+            }    
+
+        const proyect = new Proyect(req.body);
+        const result = await proyect.save();
+        res.status(201).json(result); // Cambié el estado a 201 para creación exitosa
+    } catch (err) {
+        console.error(err); // Agrega esto para ver el error en la consola
+        res.status(500).json({ mensaje: err.message });
+    }
+});
+
 //Mostrar Todos los Registros de personas
 router.get('/',async(req,res) =>{
     try{

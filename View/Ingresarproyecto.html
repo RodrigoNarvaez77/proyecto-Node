@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agregar Proyecto</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            background-color: #f8f9fa; /* Fondo gris claro */
+        }
+        .container {
+            margin-top: 50px;
+            background-color: #ffffff; /* Fondo blanco para el formulario */
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h2 {
+            text-align: center; /* Centra el título */
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>Agregar Proyecto</h2>
+    <form id="addProyectoForm">
+        <div class="form-group">
+            <label for="proyecto">Proyecto:</label>
+            <input type="text" class="form-control" id="proyecto" name="proyecto" required>
+        </div>
+        <div class="form-group">
+            <label for="area">Area:</label>
+            <input type="text" class="form-control" id="area" name="area" required>
+        </div>
+        <button id="boton" type="submit" class="btn btn-primary">Agregar Proyecto</button>
+        <button onclick="window.history.back();" class="btn btn-secondary">Volver</button>
+    </form>
+</div>
+<script src ="./ViewJS/ingresoproyectos.js"></script>
+</body>
+</html>
